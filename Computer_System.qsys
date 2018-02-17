@@ -13,7 +13,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "9";
          type = "int";
       }
    }
@@ -23,6 +23,14 @@
       {
          value = "1";
          type = "boolean";
+      }
+   }
+   element ADC_spi
+   {
+      datum _sortIndex
+      {
+         value = "11";
+         type = "int";
       }
    }
    element ARM_A9_HPS
@@ -45,7 +53,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "7";
          type = "int";
       }
    }
@@ -61,7 +69,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "8";
          type = "int";
       }
    }
@@ -73,36 +81,36 @@
          type = "boolean";
       }
    }
-   element Expansion_JP1
+   element BMS_UART
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "13";
          type = "int";
       }
    }
-   element Expansion_JP1.s1
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-   }
-   element Expansion_JP7
+   element CAN_spi
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "12";
          type = "int";
       }
    }
-   element Expansion_JP7.s1
+   element Computer_System
    {
-      datum _lockedAddress
+      datum _originalDeviceFamily
       {
-         value = "1";
-         type = "boolean";
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element Computer_System
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
       }
    }
    element JTAG_to_FPGA_Bridge
@@ -153,6 +161,14 @@
          type = "boolean";
       }
    }
+   element SPI_select
+   {
+      datum _sortIndex
+      {
+         value = "14";
+         type = "int";
+      }
+   }
    element Slider_Switches
    {
       datum _sortIndex
@@ -177,11 +193,19 @@
          type = "int";
       }
    }
+   element ls_sw
+   {
+      datum _sortIndex
+      {
+         value = "15";
+         type = "int";
+      }
+   }
    element spi_controller_0
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "10";
          type = "int";
       }
    }
@@ -216,6 +240,11 @@
  <instanceScript></instanceScript>
  <interface name="adc" internal="ADC.external_interface" type="conduit" dir="end" />
  <interface
+   name="adc_spi_external"
+   internal="ADC_spi.external"
+   type="conduit"
+   dir="end" />
+ <interface
    name="arduino_gpio"
    internal="Arduino_GPIO.external_connection"
    type="conduit"
@@ -226,19 +255,19 @@
    type="conduit"
    dir="end" />
  <interface
-   name="expansion_jp1"
-   internal="Expansion_JP1.external_connection"
-   type="conduit"
-   dir="end" />
- <interface
-   name="expansion_jp7"
-   internal="Expansion_JP7.external_connection"
+   name="can_spi_external"
+   internal="CAN_spi.external"
    type="conduit"
    dir="end" />
  <interface name="hps_io" internal="ARM_A9_HPS.hps_io" type="conduit" dir="end" />
  <interface
    name="leds"
    internal="LEDs.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="ls_sw_external_connection"
+   internal="ls_sw.external_connection"
    type="conduit"
    dir="end" />
  <interface name="memory" internal="ARM_A9_HPS.memory" type="conduit" dir="end" />
@@ -258,6 +287,11 @@
    type="conduit"
    dir="end" />
  <interface
+   name="spi_select_external_connection"
+   internal="SPI_select.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
    name="system_pll_ref_clk"
    internal="System_PLL.ref_clk"
    type="clock"
@@ -267,7 +301,12 @@
    internal="System_PLL.ref_reset"
    type="reset"
    dir="end" />
- <module name="ADC" kind="altera_up_avalon_adc" version="16.1" enabled="1">
+ <interface
+   name="uart_0_external_connection"
+   internal="BMS_UART.external_connection"
+   type="conduit"
+   dir="end" />
+ <module name="ADC" kind="altera_up_avalon_adc" version="15.1" enabled="1">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="100000000" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="board" value="DE0-Nano-SoC" />
@@ -275,7 +314,23 @@
   <parameter name="numch_" value="8" />
   <parameter name="sclk_freq" value="12.5" />
  </module>
- <module name="ARM_A9_HPS" kind="altera_hps" version="16.1" enabled="1">
+ <module name="ADC_spi" kind="altera_avalon_spi" version="16.0" enabled="1">
+  <parameter name="avalonSpec" value="2.0" />
+  <parameter name="clockPhase" value="0" />
+  <parameter name="clockPolarity" value="0" />
+  <parameter name="dataWidth" value="16" />
+  <parameter name="disableAvalonFlowControl" value="false" />
+  <parameter name="inputClockRate" value="100000000" />
+  <parameter name="insertDelayBetweenSlaveSelectAndSClk" value="true" />
+  <parameter name="insertSync" value="false" />
+  <parameter name="lsbOrderedFirst" value="false" />
+  <parameter name="masterSPI" value="true" />
+  <parameter name="numberOfSlaves" value="2" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="targetClockRate" value="10000000" />
+  <parameter name="targetSlaveSelectToSClkDelay" value="15.0" />
+ </module>
+ <module name="ARM_A9_HPS" kind="altera_hps" version="16.0" enabled="1">
   <parameter name="ABSTRACT_REAL_COMPARE_TEST" value="false" />
   <parameter name="ABS_RAM_MEM_INIT_FILENAME" value="meminit" />
   <parameter name="ACV_PHY_CLK_ADD_FR_PHASE" value="0.0" />
@@ -408,6 +463,7 @@
   <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_I2C1_SCL_IN" value="100" />
   <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_I2C2_SCL_IN" value="100" />
   <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_I2C3_SCL_IN" value="100" />
+  <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_SDIO_CLK_IN" value="100" />
   <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_SPIS0_SCLK_IN" value="100" />
   <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_SPIS1_SCLK_IN" value="100" />
   <parameter name="FPGA_PERIPHERAL_INPUT_CLOCK_FREQ_USB0_CLK_IN" value="100" />
@@ -808,7 +864,7 @@
  <module
    name="Arduino_GPIO"
    kind="altera_avalon_pio"
-   version="16.1"
+   version="16.0"
    enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="true" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -826,7 +882,7 @@
  <module
    name="Arduino_Reset_N"
    kind="altera_avalon_pio"
-   version="16.1"
+   version="16.0"
    enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="true" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -841,46 +897,42 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="1" />
  </module>
- <module
-   name="Expansion_JP1"
-   kind="altera_avalon_pio"
-   version="16.1"
-   enabled="1">
-  <parameter name="bitClearingEdgeCapReg" value="true" />
-  <parameter name="bitModifyingOutReg" value="false" />
-  <parameter name="captureEdge" value="true" />
+ <module name="BMS_UART" kind="altera_avalon_uart" version="16.0" enabled="1">
+  <parameter name="baud" value="9600" />
   <parameter name="clockRate" value="100000000" />
-  <parameter name="direction" value="Bidir" />
-  <parameter name="edgeType" value="FALLING" />
-  <parameter name="generateIRQ" value="true" />
-  <parameter name="irqType" value="EDGE" />
-  <parameter name="resetValue" value="0" />
-  <parameter name="simDoTestBenchWiring" value="true" />
-  <parameter name="simDrivenValue" value="0" />
-  <parameter name="width" value="32" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="true" />
+  <parameter name="parity" value="EVEN" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
  </module>
- <module
-   name="Expansion_JP7"
-   kind="altera_avalon_pio"
-   version="16.1"
-   enabled="1">
-  <parameter name="bitClearingEdgeCapReg" value="true" />
-  <parameter name="bitModifyingOutReg" value="false" />
-  <parameter name="captureEdge" value="true" />
-  <parameter name="clockRate" value="100000000" />
-  <parameter name="direction" value="Bidir" />
-  <parameter name="edgeType" value="FALLING" />
-  <parameter name="generateIRQ" value="true" />
-  <parameter name="irqType" value="EDGE" />
-  <parameter name="resetValue" value="0" />
-  <parameter name="simDoTestBenchWiring" value="true" />
-  <parameter name="simDrivenValue" value="0" />
-  <parameter name="width" value="32" />
+ <module name="CAN_spi" kind="altera_avalon_spi" version="16.0" enabled="1">
+  <parameter name="avalonSpec" value="2.0" />
+  <parameter name="clockPhase" value="0" />
+  <parameter name="clockPolarity" value="0" />
+  <parameter name="dataWidth" value="24" />
+  <parameter name="disableAvalonFlowControl" value="false" />
+  <parameter name="inputClockRate" value="100000000" />
+  <parameter name="insertDelayBetweenSlaveSelectAndSClk" value="true" />
+  <parameter name="insertSync" value="false" />
+  <parameter name="lsbOrderedFirst" value="false" />
+  <parameter name="masterSPI" value="true" />
+  <parameter name="numberOfSlaves" value="3" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="targetClockRate" value="8000000" />
+  <parameter name="targetSlaveSelectToSClkDelay" value="20.0" />
  </module>
  <module
    name="JTAG_to_FPGA_Bridge"
    kind="altera_jtag_avalon_master"
-   version="16.1"
+   version="16.0"
    enabled="1">
   <parameter name="AUTO_DEVICE" value="5CSEMA4U23C6" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
@@ -894,7 +946,7 @@
  <module
    name="JTAG_to_HPS_Bridge"
    kind="altera_jtag_avalon_master"
-   version="16.1"
+   version="16.0"
    enabled="1">
   <parameter name="AUTO_DEVICE" value="5CSEMA4U23C6" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
@@ -905,7 +957,7 @@
   <parameter name="PLI_PORT" value="50000" />
   <parameter name="USE_PLI" value="0" />
  </module>
- <module name="LEDs" kind="altera_avalon_pio" version="16.1" enabled="1">
+ <module name="LEDs" kind="altera_avalon_pio" version="16.0" enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
   <parameter name="captureEdge" value="false" />
@@ -922,7 +974,7 @@
  <module
    name="Pushbuttons"
    kind="altera_avalon_pio"
-   version="16.1"
+   version="16.0"
    enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="true" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -937,10 +989,24 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="2" />
  </module>
+ <module name="SPI_select" kind="altera_avalon_pio" version="16.0" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="8" />
+ </module>
  <module
    name="Slider_Switches"
    kind="altera_avalon_pio"
-   version="16.1"
+   version="16.0"
    enabled="1">
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
@@ -958,18 +1024,31 @@
  <module
    name="System_PLL"
    kind="altera_up_avalon_sys_sdram_pll"
-   version="16.1"
+   version="15.1"
    enabled="1">
   <parameter name="AUTO_DEVICE" value="5CSEMA4U23C6" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="CIII_boards" value="DE0" />
   <parameter name="CIV_boards" value="DE2-115" />
   <parameter name="CV_boards" value="DE0-Nano-SoC" />
-  <parameter name="MAX10_boards" value="DE10-Lite" />
   <parameter name="device_family" value="Cyclone V" />
   <parameter name="gui_outclk" value="100.0" />
   <parameter name="gui_refclk" value="50.0" />
   <parameter name="other_boards" value="None" />
+ </module>
+ <module name="ls_sw" kind="altera_avalon_pio" version="16.0" enabled="1">
+  <parameter name="bitClearingEdgeCapReg" value="false" />
+  <parameter name="bitModifyingOutReg" value="false" />
+  <parameter name="captureEdge" value="false" />
+  <parameter name="clockRate" value="100000000" />
+  <parameter name="direction" value="Output" />
+  <parameter name="edgeType" value="RISING" />
+  <parameter name="generateIRQ" value="false" />
+  <parameter name="irqType" value="LEVEL" />
+  <parameter name="resetValue" value="0" />
+  <parameter name="simDoTestBenchWiring" value="false" />
+  <parameter name="simDrivenValue" value="0" />
+  <parameter name="width" value="12" />
  </module>
  <module
    name="spi_controller_0"
@@ -978,7 +1057,7 @@
    enabled="1" />
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="ADC.adc_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -987,7 +1066,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="spi_controller_0.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -996,7 +1075,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="LEDs.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1005,7 +1084,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="Slider_Switches.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1014,7 +1093,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="Pushbuttons.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1023,25 +1102,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
-   start="ARM_A9_HPS.h2f_lw_axi_master"
-   end="Expansion_JP1.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0060" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="ARM_A9_HPS.h2f_lw_axi_master"
-   end="Expansion_JP7.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x0070" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="Arduino_GPIO.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1050,7 +1111,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_lw_axi_master"
    end="Arduino_Reset_N.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1059,7 +1120,52 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_lw_axi_master"
+   end="BMS_UART.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0300" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_lw_axi_master"
+   end="SPI_select.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0200" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_lw_axi_master"
+   end="ls_sw.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0120" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_lw_axi_master"
+   end="ADC_spi.spi_control_port">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0240" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_lw_axi_master"
+   end="CAN_spi.spi_control_port">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0220" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="ADC.adc_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -1068,7 +1174,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="spi_controller_0.avalon_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -1077,7 +1183,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_HPS_Bridge.master"
    end="ARM_A9_HPS.f2h_axi_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -1086,7 +1192,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="LEDs.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1095,7 +1201,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="Slider_Switches.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1104,7 +1210,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="Pushbuttons.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1113,25 +1219,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
-   start="JTAG_to_FPGA_Bridge.master"
-   end="Expansion_JP1.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0xff200060" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
-   start="JTAG_to_FPGA_Bridge.master"
-   end="Expansion_JP7.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0xff200070" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="Arduino_GPIO.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1140,7 +1228,7 @@
  </connection>
  <connection
    kind="avalon"
-   version="16.1"
+   version="16.0"
    start="JTAG_to_FPGA_Bridge.master"
    end="Arduino_Reset_N.s1">
   <parameter name="arbitrationPriority" value="1" />
@@ -1148,203 +1236,307 @@
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
+   kind="avalon"
+   version="16.0"
+   start="JTAG_to_FPGA_Bridge.master"
+   end="BMS_UART.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0xff200300" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="JTAG_to_FPGA_Bridge.master"
+   end="SPI_select.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0xff200200" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="JTAG_to_FPGA_Bridge.master"
+   end="ls_sw.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0xff200120" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="JTAG_to_FPGA_Bridge.master"
+   end="ADC_spi.spi_control_port">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0xff000240" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="16.0"
+   start="JTAG_to_FPGA_Bridge.master"
+   end="CAN_spi.spi_control_port">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0xff000220" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="JTAG_to_HPS_Bridge.clk" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="JTAG_to_FPGA_Bridge.clk" />
- <connection kind="clock" version="16.1" start="System_PLL.sys_clk" end="LEDs.clk" />
+ <connection kind="clock" version="16.0" start="System_PLL.sys_clk" end="LEDs.clk" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="Slider_Switches.clk" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="Pushbuttons.clk" />
  <connection
    kind="clock"
-   version="16.1"
-   start="System_PLL.sys_clk"
-   end="Expansion_JP1.clk" />
- <connection
-   kind="clock"
-   version="16.1"
-   start="System_PLL.sys_clk"
-   end="Expansion_JP7.clk" />
- <connection
-   kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="Arduino_GPIO.clk" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="Arduino_Reset_N.clk" />
- <connection kind="clock" version="16.1" start="System_PLL.sys_clk" end="ADC.clk" />
+ <connection kind="clock" version="16.0" start="System_PLL.sys_clk" end="ADC.clk" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
+   start="System_PLL.sys_clk"
+   end="ADC_spi.clk" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="System_PLL.sys_clk"
+   end="CAN_spi.clk" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="System_PLL.sys_clk"
+   end="BMS_UART.clk" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="System_PLL.sys_clk"
+   end="SPI_select.clk" />
+ <connection
+   kind="clock"
+   version="16.0"
+   start="System_PLL.sys_clk"
+   end="ls_sw.clk" />
+ <connection
+   kind="clock"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="spi_controller_0.clock_sink" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="ARM_A9_HPS.f2h_axi_clock" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="ARM_A9_HPS.h2f_axi_clock" />
  <connection
    kind="clock"
-   version="16.1"
+   version="16.0"
    start="System_PLL.sys_clk"
    end="ARM_A9_HPS.h2f_lw_axi_clock" />
  <connection
    kind="interrupt"
-   version="16.1"
+   version="16.0"
+   start="ARM_A9_HPS.f2h_irq0"
+   end="spi_controller_0.interrupt_sender">
+  <parameter name="irqNumber" value="14" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="16.0"
    start="ARM_A9_HPS.f2h_irq0"
    end="Pushbuttons.irq">
   <parameter name="irqNumber" value="1" />
  </connection>
  <connection
    kind="interrupt"
-   version="16.1"
-   start="ARM_A9_HPS.f2h_irq0"
-   end="Expansion_JP1.irq">
-  <parameter name="irqNumber" value="11" />
- </connection>
- <connection
-   kind="interrupt"
-   version="16.1"
-   start="ARM_A9_HPS.f2h_irq0"
-   end="Expansion_JP7.irq">
-  <parameter name="irqNumber" value="12" />
- </connection>
- <connection
-   kind="interrupt"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.f2h_irq0"
    end="Arduino_GPIO.irq">
   <parameter name="irqNumber" value="13" />
  </connection>
  <connection
+   kind="interrupt"
+   version="16.0"
+   start="ARM_A9_HPS.f2h_irq0"
+   end="ADC_spi.irq">
+  <parameter name="irqNumber" value="0" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="16.0"
+   start="ARM_A9_HPS.f2h_irq0"
+   end="CAN_spi.irq">
+  <parameter name="irqNumber" value="2" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="16.0"
+   start="ARM_A9_HPS.f2h_irq0"
+   end="BMS_UART.irq">
+  <parameter name="irqNumber" value="3" />
+ </connection>
+ <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="JTAG_to_HPS_Bridge.clk_reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="JTAG_to_FPGA_Bridge.clk_reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="LEDs.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="Slider_Switches.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="Pushbuttons.reset" />
  <connection
    kind="reset"
-   version="16.1"
-   start="ARM_A9_HPS.h2f_reset"
-   end="Expansion_JP1.reset" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="ARM_A9_HPS.h2f_reset"
-   end="Expansion_JP7.reset" />
- <connection
-   kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="Arduino_GPIO.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="Arduino_Reset_N.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="ADC.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_reset"
+   end="ADC_spi.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_reset"
+   end="CAN_spi.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_reset"
+   end="BMS_UART.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_reset"
+   end="SPI_select.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="ARM_A9_HPS.h2f_reset"
+   end="ls_sw.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
    start="ARM_A9_HPS.h2f_reset"
    end="spi_controller_0.reset_sink" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="JTAG_to_HPS_Bridge.clk_reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="JTAG_to_FPGA_Bridge.clk_reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="LEDs.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="Slider_Switches.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="Pushbuttons.reset" />
  <connection
    kind="reset"
-   version="16.1"
-   start="System_PLL.reset_source"
-   end="Expansion_JP1.reset" />
- <connection
-   kind="reset"
-   version="16.1"
-   start="System_PLL.reset_source"
-   end="Expansion_JP7.reset" />
- <connection
-   kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="Arduino_GPIO.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="Arduino_Reset_N.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
    start="System_PLL.reset_source"
    end="ADC.reset" />
  <connection
    kind="reset"
-   version="16.1"
+   version="16.0"
+   start="System_PLL.reset_source"
+   end="ADC_spi.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="System_PLL.reset_source"
+   end="CAN_spi.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="System_PLL.reset_source"
+   end="BMS_UART.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="System_PLL.reset_source"
+   end="SPI_select.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
+   start="System_PLL.reset_source"
+   end="ls_sw.reset" />
+ <connection
+   kind="reset"
+   version="16.0"
    start="System_PLL.reset_source"
    end="spi_controller_0.reset_sink" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />

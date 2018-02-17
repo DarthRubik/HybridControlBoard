@@ -119,6 +119,29 @@ wire [7:0] servo_1_reg;
 
 wire slowClock;
 
+wire ADC_SPI_mosi;
+wire ADC_SPI_miso;
+wire ADC_SPI_clk;
+wire CAN_SPI_mosi;
+wire CAN_SPI_miso;
+wire CAN_SPI_clk;
+wire [7:0] SPI_SELECT_BUS;
+wire REAL_SPI_mosi;
+wire REAL_SPI_miso;
+wire REAL_SPI_clk;
+
+
+//Add more later if necessary
+assign REAL_SPI_clk = SPI_SELECT_BUS[0] ? ADC_SPI_clk : CAN_SPI_clk; 
+assign REAL_SPI_mosi = SPI_SELECT_BUS[0] ? ADC_SPI_mosi : CAN_SPI_mosi; 
+assign ADC_SPI_miso = REAL_SPI_miso; 
+assign CAN_SPI_miso = REAL_SPI_miso;
+
+assign GPIO_0[32] = CAN_SPI_clk;
+assign REAL_SPI_miso = GPIO_0[34];
+assign GPIO_0[35] = CAN_SPI_mosi;
+
+
 
 //SLOWCLK U1(.RST(hps_fpga_reset_n),.CLK50MHZ(CLOCK_50),.CLK1HZ(slowClock));
 //servo U2(.eightBitBus(servo_0_reg),.clk(slowClock),.rst(hps_fpga_reset_n),.outputSignal(LED[0]));
@@ -129,8 +152,6 @@ wire slowClock;
 //=======================================================
 //  Structural coding
 //=======================================================
-
-
 Computer_System The_System (
 	////////////////////////////////////
 	// FPGA Side
@@ -157,18 +178,34 @@ Computer_System The_System (
 
 	// Pushbuttons
 	.pushbuttons_export					(~KEY),
+	
+	
+	.ls_sw_external_connection_export({GPIO_1[25],GPIO_1[24],GPIO_1[27],GPIO_1[26],GPIO_1[29],GPIO_1[28],
+												  GPIO_1[31],GPIO_1[30],GPIO_1[33],GPIO_1[32],GPIO_1[35],GPIO_1[34]}),
+	
 
 	// Expansion JP1
 	//.expansion_jp1_export				({GPIO_0[35:19], GPIO_0[17], GPIO_0[15:3], GPIO_0[1]}),
 
 	//.expansion_jp1_export            ({GPIO_0[29],GPIO_0[28],GPIO_0[27],GPIO_0[26],GPIO_0[34],GPIO_0[4],GPIO_0[3],GPIO_0[2],GPIO_0[1],GPIO_0[0],GPIO_0[35],GPIO_0[33],GPIO_0[25],GPIO_0[12],GPIO_0[11],GPIO_0[10],GPIO_0[24],GPIO_0[23],GPIO_0[22],GPIO_0[21],GPIO_0[20],GPIO_0[19],GPIO_0[18],GPIO_0[17],GPIO_0[16],GPIO_0[15],GPIO_0[14],GPIO_0[13],GPIO_0[5],GPIO_0[6],GPIO_0[7],GPIO_0[8]}),
 	// Expansion JP7
-	//.expansion_jp7_export				({GPIO_1[35:19], GPIO_1[17], GPIO_1[15:3], GPIO_1[1]}),
+	//.expansion_jp7_export				({GPIO_1[31:0]}),
 	
-	.spi_spi_clk                     ({GPIO_1[35]}),
-	.spi_spi_miso                    ({GPIO_1[34]}),
-	.spi_spi_mosi							({GPIO_1[33]}),
-	.spi_spi_cs_n								({GPIO_1[32:25]}),
+	
+	.adc_spi_external_SCLK({ADC_SPI_clk}),
+	.adc_spi_external_MOSI({ADC_SPI_mosi}),
+	.adc_spi_external_MISO({ADC_SPI_miso}),
+	.adc_spi_external_SS_n({GPIO_0[29],GPIO_0[28]}),
+	.can_spi_external_SCLK({CAN_SPI_clk}),
+	.can_spi_external_MOSI({CAN_SPI_mosi}),
+	.can_spi_external_MISO({CAN_SPI_miso}),
+	.can_spi_external_SS_n({GPIO_0[33],GPIO_0[30],GPIO_0[31]}),
+	.spi_select_external_connection_export({SPI_SELECT_BUS[7:0]}),
+	
+	//.spi_spi_clk                     ({GPIO_1[35]}),
+	//.spi_spi_miso                    ({GPIO_1[34]}),
+	//.spi_spi_mosi							({GPIO_1[33]}),
+	//.spi_spi_cs_n								({GPIO_1[32:25]}),
 
 	// LEDs
 	//.leds_export						(LED),
@@ -244,7 +281,11 @@ Computer_System The_System (
 	.hps_io_hps_io_spim1_inst_MOSI		(HPS_SPIM_MOSI),
 	.hps_io_hps_io_spim1_inst_MISO		(HPS_SPIM_MISO),
 	.hps_io_hps_io_spim1_inst_SS0		(HPS_SPIM_SS),
+	
 
+	
+	
+	
 	// UART
 	.hps_io_hps_io_uart0_inst_RX		(HPS_UART_RX),
 	.hps_io_hps_io_uart0_inst_TX		(HPS_UART_TX),

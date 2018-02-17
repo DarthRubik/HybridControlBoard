@@ -1,6 +1,6 @@
 Flow report for DE0_Nano_SoC_Computer
-Fri Oct 27 23:19:08 2017
-Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
+Mon Dec 18 13:20:54 2017
+Quartus Prime Version 16.0.2 Build 222 07/20/2016 SJ Lite Edition
 
 
 ---------------------
@@ -21,18 +21,18 @@ Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
 ----------------
 ; Legal Notice ;
 ----------------
-Copyright (C) 2016  Intel Corporation. All rights reserved.
-Your use of Intel Corporation's design tools, logic functions 
+Copyright (C) 1991-2016 Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
 and other software and tools, and its AMPP partner logic 
 functions, and any output files from any of the foregoing 
 (including device programming or simulation files), and any 
 associated documentation or information are expressly subject 
-to the terms and conditions of the Intel Program License 
-Subscription Agreement, the Intel Quartus Prime License Agreement,
-the Intel MegaCore Function License Agreement, or other 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera MegaCore Function License Agreement, or other 
 applicable license agreement, including, without limitation, 
 that your use is for the sole purpose of programming logic 
-devices manufactured by Intel and sold by Intel or its 
+devices manufactured by Altera and sold by Altera or its 
 authorized distributors.  Please refer to the applicable 
 agreement for further details.
 
@@ -41,15 +41,15 @@ agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Fri Oct 27 23:17:55 2017       ;
-; Quartus Prime Version           ; 16.1.0 Build 196 10/24/2016 SJ Lite Edition ;
+; Flow Status                     ; Successful - Mon Dec 18 13:19:43 2017       ;
+; Quartus Prime Version           ; 16.0.2 Build 222 07/20/2016 SJ Lite Edition ;
 ; Revision Name                   ; DE0_Nano_SoC_Computer                       ;
 ; Top-level Entity Name           ; DE0_Nano_SoC_Computer                       ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CSEMA4U23C6                                ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 2,796 / 15,880 ( 18 % )                     ;
-; Total registers                 ; 4718                                        ;
+; Logic utilization (in ALMs)     ; 3,265 / 15,880 ( 21 % )                     ;
+; Total registers                 ; 5297                                        ;
 ; Total pins                      ; 230 / 314 ( 73 % )                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 1,024 / 2,764,800 ( < 1 % )                 ;
@@ -68,7 +68,7 @@ agreement for further details.
 +-------------------+-----------------------+
 ; Option            ; Setting               ;
 +-------------------+-----------------------+
-; Start date & time ; 10/27/2017 23:08:40   ;
+; Start date & time ; 12/18/2017 13:10:35   ;
 ; Main task         ; Compilation           ;
 ; Revision Name     ; DE0_Nano_SoC_Computer ;
 +-------------------+-----------------------+
@@ -80,7 +80,8 @@ agreement for further details.
 ; Assignment Name                         ; Value                                                                         ; Default Value ; Entity Name                              ; Section Id ;
 +-----------------------------------------+-------------------------------------------------------------------------------+---------------+------------------------------------------+------------+
 ; ALM_REGISTER_PACKING_EFFORT             ; High                                                                          ; Medium        ; --                                       ; --         ;
-; COMPILER_SIGNATURE_ID                   ; 2543711158273.150916371316716                                                 ; --            ; --                                       ; --         ;
+; COMPILER_SIGNATURE_ID                   ; 260097675688655.151362422913876                                               ; --            ; --                                       ; --         ;
+; ENABLE_SIGNALTAP                        ; On                                                                            ; --            ; --                                       ; --         ;
 ; FITTER_EFFORT                           ; Standard Fit                                                                  ; Auto Fit      ; --                                       ; --         ;
 ; HPS_ISW_FILE                            ; Computer_System/synthesis/submodules/sequencer/alt_types.pre.h                ; --            ; Computer_System_ARM_A9_HPS_hps_io_border ; --         ;
 ; HPS_ISW_FILE                            ; Computer_System/synthesis/submodules/sequencer/emif.pre.xml                   ; --            ; Computer_System_ARM_A9_HPS_hps_io_border ; --         ;
@@ -117,17 +118,19 @@ agreement for further details.
 ; MISC_FILE                               ; Computer_System/synthesis/submodules/hps.pre.xml                              ; --            ; --                                       ; --         ;
 ; OPTIMIZATION_MODE                       ; Aggressive Area                                                               ; Balanced      ; --                                       ; --         ;
 ; OPTIMIZATION_TECHNIQUE                  ; Area                                                                          ; Balanced      ; --                                       ; --         ;
-; PARTITION_COLOR                         ; -- (Not supported for targeted family)                                        ; --            ; --                                       ; Top        ;
-; PARTITION_FITTER_PRESERVATION_LEVEL     ; -- (Not supported for targeted family)                                        ; --            ; --                                       ; Top        ;
-; PARTITION_NETLIST_TYPE                  ; -- (Not supported for targeted family)                                        ; --            ; --                                       ; Top        ;
+; PARTITION_COLOR                         ; 16764057                                                                      ; --            ; --                                       ; Top        ;
+; PARTITION_FITTER_PRESERVATION_LEVEL     ; PLACEMENT_AND_ROUTING                                                         ; --            ; --                                       ; Top        ;
+; PARTITION_NETLIST_TYPE                  ; SOURCE                                                                        ; --            ; --                                       ; Top        ;
 ; PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA ; On                                                                            ; Off           ; --                                       ; --         ;
 ; POWER_BOARD_THERMAL_MODEL               ; None (CONSERVATIVE)                                                           ; --            ; --                                       ; --         ;
 ; POWER_PRESET_COOLING_SOLUTION           ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW                                         ; --            ; --                                       ; --         ;
 ; SLD_FILE                                ; Computer_System/synthesis/Computer_System.regmap                              ; --            ; --                                       ; --         ;
 ; SLD_FILE                                ; Computer_System/synthesis/Computer_System.debuginfo                           ; --            ; --                                       ; --         ;
-; SLD_INFO                                ; QSYS_NAME Computer_System HAS_SOPCINFO 1 GENERATION_ID 1509163382             ; --            ; Computer_System                          ; --         ;
+; SLD_FILE                                ; db/stp1_auto_stripped.stp                                                     ; --            ; --                                       ; --         ;
+; SLD_INFO                                ; QSYS_NAME Computer_System HAS_SOPCINFO 1 GENERATION_ID 1513624116             ; --            ; Computer_System                          ; --         ;
 ; SOPCINFO_FILE                           ; Computer_System/synthesis/../../Computer_System.sopcinfo                      ; --            ; --                                       ; --         ;
 ; SYNTHESIS_ONLY_QIP                      ; On                                                                            ; --            ; --                                       ; --         ;
+; USE_SIGNALTAP_FILE                      ; stp1.stp                                                                      ; --            ; --                                       ; --         ;
 +-----------------------------------------+-------------------------------------------------------------------------------+---------------+------------------------------------------+------------+
 
 
@@ -136,24 +139,24 @@ agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:01:33     ; 1.8                     ; 1085 MB             ; 00:02:50                           ;
-; Fitter                    ; 00:03:37     ; 1.2                     ; 3048 MB             ; 00:06:03                           ;
-; Assembler                 ; 00:00:18     ; 1.0                     ; 803 MB              ; 00:00:14                           ;
-; TimeQuest Timing Analyzer ; 00:01:11     ; 1.4                     ; 1545 MB             ; 00:01:27                           ;
-; Total                     ; 00:06:39     ; --                      ; --                  ; 00:10:34                           ;
+; Analysis & Synthesis      ; 00:01:18     ; 1.0                     ; 1348 MB             ; 00:01:38                           ;
+; Fitter                    ; 00:04:06     ; 1.0                     ; 2709 MB             ; 00:05:12                           ;
+; Assembler                 ; 00:00:16     ; 1.0                     ; 1003 MB             ; 00:00:12                           ;
+; TimeQuest Timing Analyzer ; 00:01:10     ; 1.0                     ; 1723 MB             ; 00:01:06                           ;
+; Total                     ; 00:06:50     ; --                      ; --                  ; 00:08:08                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
-+-----------------------------------------------------------------------------------------+
-; Flow OS Summary                                                                         ;
-+---------------------------+------------------+------------+------------+----------------+
-; Module Name               ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
-+---------------------------+------------------+------------+------------+----------------+
-; Analysis & Synthesis      ; MSOE-CND63054MZ  ; Windows 10 ; 10.0       ; x86_64         ;
-; Fitter                    ; MSOE-CND63054MZ  ; Windows 10 ; 10.0       ; x86_64         ;
-; Assembler                 ; MSOE-CND63054MZ  ; Windows 10 ; 10.0       ; x86_64         ;
-; TimeQuest Timing Analyzer ; MSOE-CND63054MZ  ; Windows 10 ; 10.0       ; x86_64         ;
-+---------------------------+------------------+------------+------------+----------------+
++----------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                        ;
++---------------------------+------------------+-----------+------------+----------------+
+; Module Name               ; Machine Hostname ; OS Name   ; OS Version ; Processor type ;
++---------------------------+------------------+-----------+------------+----------------+
+; Analysis & Synthesis      ; MSOE-CND63054WC  ; Windows 8 ; 6.2        ; x86_64         ;
+; Fitter                    ; MSOE-CND63054WC  ; Windows 8 ; 6.2        ; x86_64         ;
+; Assembler                 ; MSOE-CND63054WC  ; Windows 8 ; 6.2        ; x86_64         ;
+; TimeQuest Timing Analyzer ; MSOE-CND63054WC  ; Windows 8 ; 6.2        ; x86_64         ;
++---------------------------+------------------+-----------+------------+----------------+
 
 
 ------------

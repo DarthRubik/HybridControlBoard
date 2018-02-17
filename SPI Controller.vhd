@@ -103,7 +103,7 @@ library ieee;
 --* @author Hans Huebner and John E. Kent
 --* @version 0.2 from 16 June 2010
 
-entity spi_master is
+entity spi_controller is
   port (
     --+ CPU Interface Signals
     clk                : in  std_logic;
@@ -132,7 +132,7 @@ end;
 --* The SPI clock is derived from the bus clock input
 --* divided by 2, 4, 8 or 16.
 
-architecture rtl of spi_master is
+architecture rtl of spi_controller is
 
   --* State type of the SPI transfer state machine
   type   state_type is (s_idle, s_running);
