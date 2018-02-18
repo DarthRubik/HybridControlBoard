@@ -1,6 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include "stddef.h"
+#include "stdbool.h"
 
 typedef struct {
 	void** data;
@@ -14,7 +15,7 @@ typedef struct {
 void InitializeQueue(Queue_t* queue, void** buffer, size_t length);
 void AddToQueue(Queue_t* queue, void* data);
 void* GetFromQueue(Queue_t* queue);
-
+bool DoesQueueHaveStuff(Queue_t* queue);
 
 
 #endif

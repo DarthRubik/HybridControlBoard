@@ -10,19 +10,18 @@ void InitializeQueue(Queue_t* queue, void** buffer, size_t length)
 	queue->count = 0;
 }
 void AddToQueue(Queue_t* queue, void* data){
-	*queue->head = data;
-	
 	queue->count++;
 	if (queue->count > queue->end - queue->data){
 		DeclareError("Queue overflowed");
+		queue->count--;
+		return;
 	}
-
+	*queue->head = data;
 	queue->head++;
 	if (queue->head >= queue->end)
 	{
 		queue->head = queue->data;
 	}
-
 }
 
 void* GetFromQueue(Queue_t* queue)
@@ -33,6 +32,7 @@ void* GetFromQueue(Queue_t* queue)
 	if (queue->count == -1)
 	{
 		DeclareError("Queue underflowed");
+		queue->count++;
 		return (void*)0xBADDA1A;
 	}
 	queue->tail++;
@@ -41,5 +41,9 @@ void* GetFromQueue(Queue_t* queue)
 		queue->tail = queue->data;
 	}
 	return data;
+}
+bool DoesQueueHaveStuff(Queue_t* queue)
+{
+	return queue->count;
 }
 
