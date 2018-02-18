@@ -7,7 +7,7 @@ typedef struct{
 	volatile uint32_t reserved;
 	volatile uint32_t slaveselect;
 	volatile uint32_t eop_value;
-}SpiHw_t;
+} __attribute__((packed)) SpiHw_t;
 
 typedef struct
 {
