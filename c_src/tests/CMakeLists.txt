@@ -22,7 +22,7 @@ set_property(TARGET imp_cpputestext PROPERTY
 add_executable(RunAllTests RunAllTests.cpp)
 
 target_link_libraries(RunAllTests 
-	SpiControllerTests MockSpiHardware
+	SpiControllerTests SpiController MockSpiHardware 
 	QueueTests Queue 
 	MockError
 	imp_cpputestext imp_cpputest)
@@ -32,6 +32,6 @@ add_custom_command(
      TARGET ${UNIT_TEST}
      COMMENT "Run tests"
      POST_BUILD 
-     COMMAND ${UNIT_TEST}
+     COMMAND ${UNIT_TEST} -c
 )
 
