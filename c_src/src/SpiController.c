@@ -27,7 +27,9 @@ void QueueSpiMessage(SpiController_t* spi, SpiMessage_t* message){
 		KickOffMessage(spi,message);
 	}
 }
-void SpiChunkSet(SpiController_t* spi){
+void SpiChunkSet(SpiController_t* spi,uint32_t data){
+	
+	*(spi->message->data - 1) = data;
 	if (spi->message->messageLength)
 	{
 		WriteWordToSpi(spi->package,*spi->message->data);

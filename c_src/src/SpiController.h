@@ -21,5 +21,5 @@ typedef struct {
 
 void InitializeSpiController(SpiController_t* spi, SpiPackage_t* package,void** buffer,size_t length);
 void QueueSpiMessage(SpiController_t* spi,SpiMessage_t* message);  
-void SpiChunkSet(SpiController_t* spi);
+void SpiChunkSet(SpiController_t* spi,uint32_t data);
 #endif
