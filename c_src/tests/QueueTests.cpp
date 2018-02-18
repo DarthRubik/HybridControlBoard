@@ -23,9 +23,14 @@ TEST(Queue, CheckOneOperation)
 {
 	void* data = (void*)123;
 	AddToQueue(&queue,data);
+	
+	CHECK_EQUAL(true, DoesQueueHaveStuff(&queue));
+	
 	data = GetFromQueue(&queue);
 
 	CHECK_EQUAL((void*)123,data);
+	
+	CHECK_EQUAL(false, DoesQueueHaveStuff(&queue));
 }
 
 TEST(Queue, CheckTwoOperations)
@@ -35,9 +40,11 @@ TEST(Queue, CheckTwoOperations)
 
 	AddToQueue(&queue, (void*)0xDEAD);
 	AddToQueue(&queue, (void*)0xBEEF);
-
+	
+	CHECK_EQUAL(true, DoesQueueHaveStuff(&queue));
 	CHECK_EQUAL((void*)0xDEAD, GetFromQueue(&queue));
-        CHECK_EQUAL((void*)0xBEEF, GetFromQueue(&queue));
+	CHECK_EQUAL((void*)0xBEEF, GetFromQueue(&queue));
+	CHECK_EQUAL(false, DoesQueueHaveStuff(&queue));
 }
 
 TEST(Queue, CheckWrapAround)
@@ -45,7 +52,9 @@ TEST(Queue, CheckWrapAround)
 	for (int x = 0; x < queueSize*2; x++)
 	{
 		AddToQueue(&queue, (void*)(x+30));
+		CHECK_EQUAL(true, DoesQueueHaveStuff(&queue));
 		CHECK_EQUAL((void*)(x+30), GetFromQueue(&queue));
+		CHECK_EQUAL(false, DoesQueueHaveStuff(&queue));
 	}
 }
 
@@ -55,6 +64,13 @@ TEST(Queue, CheckOverflow)
 	for (int x = 0; x < queueSize + 1; x++)
 	{
 		AddToQueue(&queue, (void*)(x+42));
+		CHECK_EQUAL(true, DoesQueueHaveStuff(&queue));
+	}
+	for (int x = 0; x < queueSize; x++)
+	{
+		void* ActualData = (void*)(x+42);
+		void* gottenData = GetFromQueue(&queue);
+		CHECK_EQUAL(ActualData,gottenData);
 	}
 	mock().checkExpectations();
 }
@@ -64,6 +80,7 @@ TEST(Queue, CheckUnderflow)
 	AddToQueue(&queue, (void*)42);
 	GetFromQueue(&queue);
 	GetFromQueue(&queue);
+	CHECK_EQUAL(false, DoesQueueHaveStuff(&queue));
 	mock().checkExpectations();
 }
 TEST(Queue, CheckFullRange)
@@ -72,11 +89,13 @@ TEST(Queue, CheckFullRange)
 	for (int x = 0; x < queueSize; x++)
 	{
 		AddToQueue(&queue, (void*)(x+100));
+		CHECK_EQUAL(true, DoesQueueHaveStuff(&queue));
 	}
 	for (int x = 0; x < queueSize; x++)
 	{
 		CHECK_EQUAL((void*)(x+100), GetFromQueue(&queue));
 	}
+	CHECK_EQUAL(false, DoesQueueHaveStuff(&queue));
 }
 TEST(Queue, CheckOverflowWithWrap)
 {
@@ -92,10 +111,12 @@ TEST(Queue, CheckOverflowWithWrap)
 	for (int x = 0; x < queueSize; x++)
 	{
 		AddToQueue(&queue, (void*)(x+100));
+		CHECK_EQUAL(true, DoesQueueHaveStuff(&queue));
 	}
 	for (int x = 0; x < queueSize; x++)
 	{
 		CHECK_EQUAL((void*)(x+100), GetFromQueue(&queue));
 	}
+	CHECK_EQUAL(false, DoesQueueHaveStuff(&queue));
 }
 
