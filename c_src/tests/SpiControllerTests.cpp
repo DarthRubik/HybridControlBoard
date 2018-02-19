@@ -36,7 +36,7 @@ TEST(SpiController, VerifyShortMessage)
 
 
 	SpiChunkSet(&spi,23);
-	CHECK_EQUAL(23,data[0]);
+	LONGS_EQUAL(23,data[0]);
 	mock().checkExpectations();
 
 }
@@ -59,7 +59,7 @@ TEST(SpiController, VerifyLongMessage)
 	for (int x = 0; x < 10; x++)
 	{
 		SpiChunkSet(&spi,x);
-		CHECK_EQUAL(x,data[x]);
+		LONGS_EQUAL(x,data[x]);
 	}
 	mock().checkExpectations();
 }
@@ -83,7 +83,7 @@ TEST(SpiController, QueueMultipleMessages)
 	for (int x = 0; x < 3; x++)
 	{
 		SpiChunkSet(&spi,x+100);
-		CHECK_EQUAL(x+100,data[x]);
+		LONGS_EQUAL(x+100,data[x]);
 
 	}
 	mock().checkExpectations();
@@ -109,7 +109,7 @@ TEST(SpiController, QueueMaxMessages)
 	for (int x = 0; x < bufferSize+1; x++)
 	{
 		SpiChunkSet(&spi,x);
-		CHECK_EQUAL(x,data[x]);
+		LONGS_EQUAL(x,data[x]);
 	}
 	mock().checkExpectations();
 }
@@ -141,7 +141,7 @@ TEST(SpiController, OverflowQueue)
 	for (int x = 0; x < bufferSize+1; x++)
 	{
 		SpiChunkSet(&spi,x);
-		CHECK_EQUAL(x,data[x]);
+		LONGS_EQUAL(x,data[x]);
 	}
 	mock().checkExpectations();
 }
