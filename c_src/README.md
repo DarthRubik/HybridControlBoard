@@ -7,7 +7,7 @@ C Code for the Hybrid Control Board
 In order to build the C Code for this project you will obviously need a copy of this repository.  This project uses cmake as a build program, so it should be rather straight forward.
 
 Before you try to build, you should note that you are likely going to have to install the cpputest library which is as simple as running:
-`apt-get install cpputest`.  Next you have to tell cmake where it is, so you have to define two environment variables: `CPPUTEST_BIN` and `CPPUTEST_INCLUDE` (TODO: change this).  On my install they are defined as so:
+`apt-get install cpputest`.  Next you have to tell cmake where it is, so you have to define two environment variables: `CPPUTEST_BIN` and `CPPUTEST_INCLUDE` (TODO: change this).  On my install they are defined as:
 
 ~~~~
 export CPPUTEST_BIN=/usr/lib/i386-linux-gnu
