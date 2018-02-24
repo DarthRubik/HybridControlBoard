@@ -36,9 +36,6 @@ TEST(Queue, CheckOneOperation)
 
 TEST(Queue, CheckTwoOperations)
 {
-	void* data;
-
-
 	AddToQueue(&queue, (void*)0xDEAD);
 	AddToQueue(&queue, (void*)0xBEEF);
 	
@@ -50,7 +47,7 @@ TEST(Queue, CheckTwoOperations)
 
 TEST(Queue, CheckWrapAround)
 {
-	for (int x = 0; x < queueSize*2; x++)
+	for (size_t x = 0; x < queueSize*2; x++)
 	{
 		AddToQueue(&queue, (void*)(x+30));
 		CHECK_TRUE(DoesQueueHaveStuff(&queue));
@@ -62,12 +59,12 @@ TEST(Queue, CheckWrapAround)
 TEST(Queue, CheckOverflow)
 {
 	mock().expectOneCall("DeclareError");
-	for (int x = 0; x < queueSize + 1; x++)
+	for (size_t x = 0; x < queueSize + 1; x++)
 	{
 		AddToQueue(&queue, (void*)(x+42));
 		CHECK_TRUE(DoesQueueHaveStuff(&queue));
 	}
-	for (int x = 0; x < queueSize; x++)
+	for (size_t x = 0; x < queueSize; x++)
 	{
 		void* ActualData = (void*)(x+42);
 		void* gottenData = GetFromQueue(&queue);
@@ -87,12 +84,12 @@ TEST(Queue, CheckUnderflow)
 TEST(Queue, CheckFullRange)
 {
 	
-	for (int x = 0; x < queueSize; x++)
+	for (size_t x = 0; x < queueSize; x++)
 	{
 		AddToQueue(&queue, (void*)(x+100));
 		CHECK_TRUE(DoesQueueHaveStuff(&queue));
 	}
-	for (int x = 0; x < queueSize; x++)
+	for (size_t x = 0; x < queueSize; x++)
 	{
 		POINTERS_EQUAL((void*)(x+100), GetFromQueue(&queue));
 	}
@@ -109,12 +106,12 @@ TEST(Queue, CheckOverflowWithWrap)
 	GetFromQueue(&queue);
 	GetFromQueue(&queue);
 
-	for (int x = 0; x < queueSize; x++)
+	for (size_t x = 0; x < queueSize; x++)
 	{
 		AddToQueue(&queue, (void*)(x+100));
 		CHECK_TRUE(DoesQueueHaveStuff(&queue));
 	}
-	for (int x = 0; x < queueSize; x++)
+	for (size_t x = 0; x < queueSize; x++)
 	{
 		POINTERS_EQUAL((void*)(x+100), GetFromQueue(&queue));
 	}

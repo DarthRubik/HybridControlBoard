@@ -93,7 +93,7 @@ TEST(SpiController, QueueMaxMessages)
 {
 	uint32_t data[bufferSize+1];
 	SpiMessage_t messages[bufferSize+1];
-	for (int x = 0; x < bufferSize+1; x++)
+	for (size_t x = 0; x < bufferSize+1; x++)
 	{
 		data[x] = x;
 		messages[x].data = &data[x];
@@ -103,11 +103,11 @@ TEST(SpiController, QueueMaxMessages)
 		mock().expectOneCall("WriteWordToSpi").withParameter("spi",&package).withParameter("word",data[x]);
 		mock().expectOneCall("EndSpiMessage").withParameter("spi",&package);
 	}
-	for (int x = 0; x < bufferSize+1; x++)
+	for (size_t x = 0; x < bufferSize+1; x++)
 	{
 		QueueSpiMessage(&spi,&messages[x]);
 	}
-	for (int x = 0; x < bufferSize+1; x++)
+	for (size_t x = 0; x < bufferSize+1; x++)
 	{
 		SpiChunkSet(&spi,x);
 		LONGS_EQUAL(x,data[x]);
@@ -121,7 +121,7 @@ TEST(SpiController, OverflowQueue)
 	SpiMessage_t messages[bufferSize+2];
 	
 
-	for (int x = 0; x < bufferSize+2; x++)
+	for (size_t x = 0; x < bufferSize+2; x++)
 	{
 		data[x] = x;
 		messages[x].data = &data[x];
@@ -135,11 +135,11 @@ TEST(SpiController, OverflowQueue)
 			mock().expectOneCall("EndSpiMessage").withParameter("spi",&package);
 		}
 	}
-	for (int x = 0; x < bufferSize+2; x++)
+	for (size_t x = 0; x < bufferSize+2; x++)
 	{
 		QueueSpiMessage(&spi,&messages[x]);
 	}
-	for (int x = 0; x < bufferSize+1; x++)
+	for (size_t x = 0; x < bufferSize+1; x++)
 	{
 		SpiChunkSet(&spi,x);
 		LONGS_EQUAL(x,data[x]);
