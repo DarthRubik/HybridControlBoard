@@ -3,6 +3,7 @@ extern "C"{
 }
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+#include "CppUTest/CommandLineTestRunner.h"
 
 TEST_GROUP(Queue)
 {
@@ -120,3 +121,7 @@ TEST(Queue, CheckOverflowWithWrap)
 	CHECK_FALSE(DoesQueueHaveStuff(&queue));
 }
 
+int main(int ac, char** av)
+{
+	return CommandLineTestRunner::RunAllTests(ac, av);
+}

@@ -3,6 +3,7 @@ extern "C"{
 }
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
+#include "CppUTest/CommandLineTestRunner.h"
 
 TEST_GROUP(SpiController)
 {
@@ -148,4 +149,9 @@ TEST(SpiController, OverflowQueue)
 IGNORE_TEST(SpiController, SendTimeout)
 {
 	
+}
+
+int main(int ac, char** av)
+{
+	return CommandLineTestRunner::RunAllTests(ac, av);
 }
