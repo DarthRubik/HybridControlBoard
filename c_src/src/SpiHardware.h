@@ -22,12 +22,22 @@ typedef struct
         volatile uint32_t edgeCapture;
 } __attribute__((packed)) Pio_t;
 
+
+typedef struct{
+	SpiHw_t* hardware;
+	uint32_t activeMux;
+	uint8_t slaveselect;
+} SpiTarget_t;
+
 typedef struct 
 {
-
+	Pio_t* mux;
+	SpiTarget_t* targets;
+	SpiHw_t* activeHw;
+	SpiId_t count;
 } SpiPackage_t;
 
-void InitializeSpi(SpiPackage_t* spi, SpiHw_t* hws, Pio_t* Active, SpiId_t count);
+void InitializeSpi(SpiPackage_t* spi, SpiTarget_t* hws, Pio_t* Active, SpiId_t count);
 void StartSpiMessage(SpiPackage_t* spi, SpiId_t id);
 void WriteWordToSpi(SpiPackage_t* spi, uint32_t word);
 void EndSpiMessage(SpiPackage_t* spi);
