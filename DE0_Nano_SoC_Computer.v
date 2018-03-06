@@ -137,9 +137,9 @@ assign REAL_SPI_mosi = SPI_SELECT_BUS[0] ? ADC_SPI_mosi : CAN_SPI_mosi;
 assign ADC_SPI_miso = REAL_SPI_miso; 
 assign CAN_SPI_miso = REAL_SPI_miso;
 
-assign GPIO_0[32] = CAN_SPI_clk;
+assign GPIO_0[32] = REAL_SPI_clk;
 assign REAL_SPI_miso = GPIO_0[34];
-assign GPIO_0[35] = CAN_SPI_mosi;
+assign GPIO_0[35] = REAL_SPI_mosi;
 
 
 
