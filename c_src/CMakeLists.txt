@@ -8,3 +8,4 @@ enable_language(CXX)
 
 add_subdirectory(src)
 add_subdirectory(tests)
+add_library(main main.c)

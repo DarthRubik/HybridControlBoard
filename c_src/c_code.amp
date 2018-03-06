@@ -13,9 +13,14 @@
         <type>C Program</type>
         <source_files>
             <source_file filepath="true">main.c</source_file>
+            <source_file filepath="true">src/Adc.c</source_file>
+            <source_file filepath="true">src/Error.c</source_file>
+            <source_file filepath="true">src/Queue.c</source_file>
+            <source_file filepath="true">src/SpiController.c</source_file>
+            <source_file filepath="true">src/SpiHardware.c</source_file>
         </source_files>
         <options>
-            <compiler_flags>-g -O0</compiler_flags>
+            <compiler_flags>-g -O0 -std=c99 -Isrc -DUSE_INTERRUPTS</compiler_flags>
             <emulate_unimpl_instructions>true</emulate_unimpl_instructions>
             <use_small_c_library>false</use_small_c_library>
         </options>
