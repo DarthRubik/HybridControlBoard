@@ -20,7 +20,7 @@
             <source_file filepath="true">src/SpiHardware.c</source_file>
         </source_files>
         <options>
-            <compiler_flags>-g -O0 -std=c99 -Isrc -DUSE_INTERRUPTS</compiler_flags>
+            <compiler_flags>-g -O0 -std=gnu99 -Isrc -DUSE_INTERRUPTS</compiler_flags>
             <emulate_unimpl_instructions>true</emulate_unimpl_instructions>
             <use_small_c_library>false</use_small_c_library>
         </options>
