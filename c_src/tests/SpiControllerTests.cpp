@@ -146,6 +146,10 @@ TEST(SpiController, OverflowQueue)
 	}
 	mock().checkExpectations();
 }
+TEST(SpiController, GetInterruptWithWithNoSend)
+{
+	SpiChunkSet(&spi,123);
+}
 IGNORE_TEST(SpiController, SendTimeout)
 {
 	

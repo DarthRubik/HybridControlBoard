@@ -6,6 +6,7 @@ void InitializeSpiController(SpiController_t* spi, SpiPackage_t* package, void**
 	InitializeQueue(&spi->messageQueue,buffer,length);
 	spi->package = package;
 	spi->messageRunning = false;
+	spi->message = 0;
 }
 static void KickOffMessage(SpiController_t* spi, SpiMessage_t* message)
 {
@@ -29,6 +30,8 @@ void QueueSpiMessage(SpiController_t* spi, SpiMessage_t* message){
 }
 void SpiChunkSet(SpiController_t* spi,uint32_t data){
 	
+	if (spi->message == 0)
+		return;
 	*(spi->message->data - 1) = data;
 	if (spi->message->messageLength)
 	{
