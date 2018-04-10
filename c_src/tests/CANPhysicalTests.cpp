@@ -17,7 +17,7 @@ TEST_GROUP(CAN)
 
 	void setup()
 	{
-		CANInitialize(&hw,&spi,8,16,24,32);
+		CANInitialize(&hw,&spi,8);
 	}
 	void teardown(){
 		mock().clear();
@@ -29,12 +29,18 @@ TEST_GROUP(CAN)
 			.withPointerParameter("spi",&spi)
 			.ignoreOtherParameters();
 	}
-	SpiMessage_t* ExpectSpiMessage(uint32_t data, uint32_t mask, SpiId_t id)
+	template<typename... T>
+	SpiMessage_t* ExpectSpiMessage(T... data)
 	{
+		uint32_t array[] = { (uint32_t)data ... };
 		SpiMessage_t* message = (SpiMessage_t*)mock().getData("messagePointer")
 			.getPointerValue();
-		BITS_EQUAL(data,*message->data,mask);
-		LONGS_EQUAL(id,message->id);
+		LONGS_EQUAL(sizeof...(data),message->messageLength);
+		for (size_t x = 0; x < sizeof...(data); x++)
+		{
+			LONGS_EQUAL(array[x],message->data[x]);
+		}
+		LONGS_EQUAL(8,message->id);
 		mock().checkExpectations();
 		return message;
 	}
@@ -45,7 +51,7 @@ TEST(CAN,TestWriteRegister)
 {
 	PreExpectSpiMessage();
 	CANWriteRegister(&hw,0xaa,123);
-	ExpectSpiMessage((1<<6) | (0xaa << 8) | (123 << 16),0xffffff,24);
+	ExpectSpiMessage(1<<6,0xAA,123);
 }
 TEST(CAN,TestUniquePointers)
 {
@@ -54,7 +60,7 @@ TEST(CAN,TestUniquePointers)
 	{
 		PreExpectSpiMessage();
 		CANWriteRegister(&hw,0xaa,123);
-		ptrs.push_back(ExpectSpiMessage((1<<6) | (0xaa << 8) | (123 << 16),0xffffff,24));
+		ptrs.push_back(ExpectSpiMessage(1<<6,0xAA,123));
 	}
 	for (auto x : ptrs)
 	{
@@ -76,7 +82,7 @@ TEST(CAN,TestOverflowOfQueue)
 	{
 		PreExpectSpiMessage();
 		CANWriteRegister(&hw,0xaa,123);
-		ptrs.push_back(ExpectSpiMessage((1<<6) | (0xaa << 8) | (123 << 16),0xffffff,24));
+		ptrs.push_back(ExpectSpiMessage(1<<6,0xAA,123));
 	}
 	ptrs[0]->messageLength = 0; //Tell the CAN that we are done with this message
 	ptrs[1]->messageLength = 0; 
@@ -86,7 +92,7 @@ TEST(CAN,TestOverflowOfQueue)
 	{
 		PreExpectSpiMessage();
 		CANWriteRegister(&hw,0xaa,123);
-		ptrs.push_back(ExpectSpiMessage((1<<6) | (0xaa << 8) | (123 << 16),0xffffff,24));
+		ptrs.push_back(ExpectSpiMessage(1<<6,0xAA,123));
 	}
 }
 IGNORE_TEST(CAN,ThrowErrorOnOverflow)
@@ -98,14 +104,17 @@ TEST(CAN,ReadRegister)
 	PreExpectSpiMessage();
 	CANReadRegister(&hw,0xAA,&data);
 	LONGS_EQUAL(0,data.isReady);
-	SpiMessage_t* msg = ExpectSpiMessage((1<<7)|(1<<6)|(0xAA<<8),0xffff,24);
+	SpiMessage_t* msg = ExpectSpiMessage((1<<6)|(1<<7),0xAA,0);
 	msg->messageLength = 0;
-	*msg->data = 0x42<<16;
+	msg->data[2] = 0x42;
 	UpdateCAN(&hw);
 	LONGS_EQUAL(1,data.isReady);
 	LONGS_EQUAL(0x42,data.data);
 }
 IGNORE_TEST(CAN,DontCareAboutReturn)
+{
+}
+IGNORE_TEST(CAN,ChecksMaxMessageLength)
 {
 }
 int main(int ac, char** av)

@@ -13,7 +13,7 @@ typedef struct
 
 typedef struct
 {
-	uint32_t buffer[1];
+	uint32_t buffer[5];
 	SpiMessage_t spiMessage_t;
 	CanDelayedReturn_t* ret;
 }CanMessage_t;
@@ -25,18 +25,11 @@ typedef struct
 
 	//Different IDs for each message length
 	SpiId_t msg8;
-	SpiId_t msg16;
-	SpiId_t msg24;
-	SpiId_t msg32;
 	SpiController_t* spi;
 
 }CanHw_t;
 
-void CANInitialize(CanHw_t* hw,SpiController_t* spi,
-	SpiId_t msg8,
-	SpiId_t msg16,
-	SpiId_t msg24,
-	SpiId_t msg32);
+void CANInitialize(CanHw_t* hw,SpiController_t* spi, SpiId_t msg8);
 void UpdateCAN(CanHw_t* hw);
 
 //General purpose r/w commands
