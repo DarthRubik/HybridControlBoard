@@ -24,10 +24,7 @@ void QueueSpiMessage(SpiController_t* spi,SpiMessage_t* message){
 	mock_c()->actualCall("QueueSpiMessage")->
 		withPointerParameters("spi",spi)->
 		withPointerParameters("message",message);
-
-
-
-	
+	mock_c()->setPointerData("messagePointer",message);
 }
 
 void SpiChunkSet(SpiController_t* spi,uint32_t data){

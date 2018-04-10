@@ -37,3 +37,4 @@ create_test("Run spi controller tests" "SpiControllerTests;SpiController;Queue;M
 create_test("Run queue tests" "QueueTests;Queue;MockError;imp_cpputest;imp_cpputestext")	
 create_test("Run adc tests" "AdcTests;Adc;MockSpiController;MockError;imp_cpputest;imp_cpputestext")
 create_test("Run spi hardware tests" "SpiHardwareTests;SpiHardware;MockError;imp_cpputest;imp_cpputestext")
+create_test("Run CAN Physical tests" "CANPhysicalTests;CanPhysical;MockSpiController;MockError;imp_cpputest;imp_cpputestext")
