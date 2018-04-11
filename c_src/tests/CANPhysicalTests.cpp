@@ -30,19 +30,24 @@ TEST_GROUP(CAN)
 			.ignoreOtherParameters();
 	}
 	template<typename... T>
-	SpiMessage_t* ExpectSpiMessage(T... data)
+	SpiMessage_t* ExpectPartialSpiMessage(size_t length,T... data)
 	{
 		uint32_t array[] = { (uint32_t)data ... };
 		SpiMessage_t* message = (SpiMessage_t*)mock().getData("messagePointer")
 			.getPointerValue();
 		LONGS_EQUAL(sizeof...(data),message->messageLength);
-		for (size_t x = 0; x < sizeof...(data); x++)
+		for (size_t x = 0; x < length; x++)
 		{
 			LONGS_EQUAL(array[x],message->data[x]);
 		}
 		LONGS_EQUAL(8,message->id);
 		mock().checkExpectations();
 		return message;
+	}
+	template<typename... T>
+	SpiMessage_t* ExpectSpiMessage(T... data)
+	{
+		ExpectPartialSpiMessage(sizeof...(data),data...);
 	}
 };
 
@@ -110,6 +115,28 @@ TEST(CAN,ReadRegister)
 	UpdateCAN(&hw);
 	LONGS_EQUAL(1,data.isReady);
 	LONGS_EQUAL(0x42,data.data);
+}
+TEST(CAN,ReadRange)
+{
+	CAN_RANGE_RETURN_MAKE(6,local_data);
+	local_data data;
+	PreExpectSpiMessage();
+	CANReadRange(&hw,0xAA,(CanRangeReturn_0*)&data,4);
+	LONGS_EQUAL(0,data.isReady);
+	SpiMessage_t* msg = ExpectPartialSpiMessage(2,(1<<6)|(1<<7),0xAA,0,0,0,0);
+	msg->messageLength = 0;
+
+	msg->data[2] = 0x42;
+	msg->data[3] = 0x52;
+	msg->data[4] = 0x62;
+	msg->data[5] = 0x72;
+
+	UpdateCAN(&hw);
+	LONGS_EQUAL(1,data.isReady);
+	LONGS_EQUAL(0x42,data.data[data.offset+0]);
+	LONGS_EQUAL(0x52,data.data[data.offset+1]);
+	LONGS_EQUAL(0x62,data.data[data.offset+2]);
+	LONGS_EQUAL(0x72,data.data[data.offset+3]);
 }
 IGNORE_TEST(CAN,DontCareAboutReturn)
 {
