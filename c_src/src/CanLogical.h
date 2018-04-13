@@ -4,10 +4,6 @@
 
 typedef void (*CanLogicalCallBack)(void* custom,uint32_t* data,uint8_t length);
 CAN_RANGE_RETURN_MAKE(0x11,rx_reg_t);
-typedef uint8_t CanMessageLength_t;
-typedef uint8_t CanOutputChannelIndex_t;
-typedef uint32_t CanIdentifier_t;
-typedef uint8_t CanChipOffset_t;
 typedef uint8_t CanSubscriberSize_t;
 typedef struct
 {

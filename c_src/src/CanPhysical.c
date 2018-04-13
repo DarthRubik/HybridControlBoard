@@ -33,7 +33,8 @@ void UpdateCAN(CanHw_t* hw)
 		}
 	}
 }
-static CanGenericReturn_t getGenericRange(CanRangeReturn_0* range,uint8_t offset)
+static CanGenericReturn_t getGenericRange(CanRangeReturn_0* range,
+		CanChipOffset_t offset)
 {
 	CanGenericReturn_t ret;
 	ret.isRange = 1;
@@ -94,7 +95,7 @@ static void CANMessage(CanHw_t* hw,const uint32_t* data,size_t length,
 	QueueSpiMessage(hw->spi,&message->spiMessage_t);
 }
 
-void CANWriteRegister(CanHw_t* hw,uint8_t add, uint8_t data)
+void CANWriteRegister(CanHw_t* hw,CanChipOffset_t add, uint8_t data)
 {
 	uint32_t message[] =
 	{
@@ -104,7 +105,7 @@ void CANWriteRegister(CanHw_t* hw,uint8_t add, uint8_t data)
 	};
 	CANMessage(hw,message,3,getGenericNull());
 }
-void CANReadRegister(CanHw_t* hw, uint8_t add, CanDelayedReturn_t* data)
+void CANReadRegister(CanHw_t* hw, CanChipOffset_t add, CanDelayedReturn_t* data)
 {
 	uint32_t message[] =
 	{
@@ -114,7 +115,10 @@ void CANReadRegister(CanHw_t* hw, uint8_t add, CanDelayedReturn_t* data)
 	};
 	CANMessage(hw,message,3,getGenericSingle(data));
 }
-void CANReadRange(CanHw_t* hw, uint8_t add, CanRangeReturn_0* data,uint8_t length)
+void CANReadRange(CanHw_t* hw, 
+		CanChipOffset_t add,
+		CanRangeReturn_0* data,
+		CanMessageLength_t length)
 {
 	uint32_t message[] =
 	{
@@ -123,7 +127,9 @@ void CANReadRange(CanHw_t* hw, uint8_t add, CanRangeReturn_0* data,uint8_t lengt
 	};
 	CANMessage(hw,message,2+length,getGenericRange(data,2));
 }
-void CANReadRxRegister(CanHw_t* hw,uint8_t index,CanDelayedReturn_t* data)
+void CANReadRxRegister(CanHw_t* hw,
+		CanInputChannelIndex_t index,
+		CanDelayedReturn_t* data)
 {
 	uint32_t message[] =
 	{
@@ -132,7 +138,10 @@ void CANReadRxRegister(CanHw_t* hw,uint8_t index,CanDelayedReturn_t* data)
 	};
 	CANMessage(hw,message,2,getGenericSingle(data));
 }
-void CANReadRxRange(CanHw_t* hw,uint8_t index,CanRangeReturn_0* data,uint8_t length)
+void CANReadRxRange(CanHw_t* hw,
+		CanInputChannelIndex_t index,
+		CanRangeReturn_0* data,
+		CanMessageLength_t length)
 {
 	uint32_t message[] =
 	{
@@ -140,7 +149,9 @@ void CANReadRxRange(CanHw_t* hw,uint8_t index,CanRangeReturn_0* data,uint8_t len
 	};
 	CANMessage(hw,message,1+length,getGenericRange(data,1));
 }
-void CanWriteTxRegister(CanHw_t* hw,uint8_t index, uint8_t data)
+void CanWriteTxRegister(CanHw_t* hw,
+		CanOutputChannelIndex_t index, 
+		uint8_t data)
 {
 	uint32_t message[] =
 	{
@@ -157,7 +168,10 @@ void CANRequestToSend(CanHw_t* hw,uint8_t index)
 	};
 	CANMessage(hw,message,1,getGenericNull());
 }
-void CANMutateRegisterBits(CanHw_t* hw,uint8_t address, uint8_t mask, uint8_t data)
+void CANMutateRegisterBits(CanHw_t* hw,
+		CanChipOffset_t address,
+		uint8_t mask,
+		uint8_t data)
 {
 	uint32_t message[] =
 	{
