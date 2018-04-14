@@ -8,8 +8,13 @@ extern "C"{
 #include "CppUTest/CommandLineTestRunner.h"
 #include <vector>
 #include <algorithm>
+#include <cstring>
+#include <stddef.h>
+
+#define container_of(ptr, type, member) ((type *)((char *)(1 ? (ptr) : &((type *)0)->member) - offsetof(type, member)))
 
 
+SpiMessage_t* lastMessage;
 TEST_GROUP(CAN)
 {
 	SpiController_t spi;
@@ -17,6 +22,7 @@ TEST_GROUP(CAN)
 
 	void setup()
 	{
+		std::memcpy(&hw,(void*)std::memcpy,sizeof(hw));
 		CANInitialize(&hw,&spi,8);
 	}
 	void teardown(){
@@ -42,6 +48,7 @@ TEST_GROUP(CAN)
 		}
 		LONGS_EQUAL(8,message->id);
 		mock().checkExpectations();
+		lastMessage = message;
 		return message;
 	}
 	template<typename... T>
@@ -56,7 +63,7 @@ TEST(CAN,TestWriteRegister)
 {
 	PreExpectSpiMessage();
 	CANWriteRegister(&hw,0xaa,123);
-	ExpectSpiMessage(1<<6,0xAA,123);
+	ExpectSpiMessage(1<<6,0xAA,123)->messageLength = 0;
 }
 TEST(CAN,TestUniquePointers)
 {
@@ -144,6 +151,52 @@ IGNORE_TEST(CAN,DontCareAboutReturn)
 IGNORE_TEST(CAN,ChecksMaxMessageLength)
 {
 }
+TEST(CAN,NotBusyInitialy)
+{
+	CHECK_FALSE(CANIsBusy(&hw));
+}
+TEST(CAN,BusyAfterWrite)
+{
+	PreExpectSpiMessage();
+	CANWriteRegister(&hw,0xaa,123);
+	CHECK_TRUE(CANIsBusy(&hw));
+	ExpectSpiMessage(1<<6,0xAA,123)->messageLength = 0;
+	CHECK_FALSE(CANIsBusy(&hw));
+}
+#define _this(x) container_of(x,TEST_GROUP_CppUTestGroupCAN,hw)
+
+TEST(CAN,BlockingRead)
+{
+	CANYieldFunction = [](CanHw_t* hw)
+	{
+		static void (*steps[])(CanHw_t*) =
+		{
+			[](CanHw_t* hw) {
+				_this(hw)->ExpectSpiMessage((1<<6)|(1<<7),0xAA,0);
+			},
+			[](CanHw_t* hw) {
+			},
+			[](CanHw_t* hw) {
+			},
+			[](CanHw_t* hw) {
+				lastMessage->data[2] = 0x12;
+				lastMessage->messageLength = 0;
+			},
+		};
+		static size_t index = 0;
+		steps[index](hw);
+		index++;
+		if (index >= sizeof(steps)/sizeof(steps[0]))
+		{
+			CANYieldFunction = 0;
+		}
+	};
+	PreExpectSpiMessage();
+	uint8_t data = CANReadRegisterBlocking(&hw,0xAA);
+	CANYieldFunction = 0;
+	LONGS_EQUAL(0x12,data);
+}
+
 int main(int ac, char** av)
 {
         return CommandLineTestRunner::RunAllTests(ac, av);

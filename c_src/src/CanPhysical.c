@@ -8,6 +8,11 @@ void CANInitialize(CanHw_t* hw,SpiController_t* spi,SpiId_t msg8)
 	hw->spi = spi;
 	hw->msg8 = msg8;
 	hw->messageIndex = 0;
+	for (size_t x = 0; x < 10; x++)
+	{
+		hw->messages[x].spiMessage_t.messageLength = 0;
+		hw->messages[x].ret.isFull = 0;
+	}
 }
 void UpdateCAN(CanHw_t* hw)
 {
@@ -32,6 +37,17 @@ void UpdateCAN(CanHw_t* hw)
 			}
 		}
 	}
+}
+uint8_t CANIsBusy(CanHw_t* hw)
+{
+	for (size_t x = 0; x < 10; x++)
+	{
+		if (hw->messages[x].spiMessage_t.messageLength)
+		{
+			return 1;
+		}
+	}
+	return 0;
 }
 static CanGenericReturn_t getGenericRange(CanRangeReturn_0* range,
 		CanChipOffset_t offset)
@@ -199,4 +215,23 @@ void CANReadRxStatusRegister(CanHw_t* hw, CanDelayedReturn_t* data)
 		0
 	};
 	CANMessage(hw,message,2,getGenericSingle(data));
+}
+
+void (*CANYieldFunction)(CanHw_t*) = 0;
+
+uint8_t CANReadRegisterBlocking(CanHw_t* hw, CanChipOffset_t offset)
+{
+	CanDelayedReturn_t reg;
+	CANReadRegister(hw,offset,&reg);
+	while (!reg.isReady)
+	{
+		//This code is here for debugging
+		//in the real application it should never do anything
+		if (CANYieldFunction)
+			CANYieldFunction(hw);
+
+		
+		UpdateCAN(hw);
+	}
+	return reg.data;
 }

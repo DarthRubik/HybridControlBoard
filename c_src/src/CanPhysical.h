@@ -60,6 +60,7 @@ typedef struct
 
 void CANInitialize(CanHw_t* hw,SpiController_t* spi, SpiId_t msg8);
 void UpdateCAN(CanHw_t* hw);
+uint8_t CANIsBusy(CanHw_t* hw);
 
 //General purpose r/w commands
 void CANReadRegister(CanHw_t* hw, CanChipOffset_t add, CanDelayedReturn_t* data);
@@ -90,5 +91,15 @@ void CANMutateRegisterBits(CanHw_t* hw,
 
 void CANReadStatusRegister(CanHw_t* hw, CanDelayedReturn_t* data);
 void CANReadRxStatusRegister(CanHw_t* hw, CanDelayedReturn_t* data);
+
+//These functions are blocking and only to be called at startup
+
+
+//This is a function used for debugging 
+//It is definately a hack, but until
+//we find a better way this is it
+extern void (*CANYieldFunction)(CanHw_t*);
+
+uint8_t CANReadRegisterBlocking(CanHw_t* hw, CanChipOffset_t offset);
 
 #endif

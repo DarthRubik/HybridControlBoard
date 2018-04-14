@@ -23,7 +23,7 @@ function(create_test COM LINKLIST)
 		TARGET ${MODULE_NAME}
 		COMMENT "${COM}"
 		POST_BUILD
-		COMMAND ${MODULE_NAME} -c
+		COMMAND ${MODULE_NAME} -c -v
 	)
 endfunction()
 

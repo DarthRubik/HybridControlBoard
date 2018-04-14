@@ -4,11 +4,15 @@
 #include "CppUTestExt/MockSupport_c.h"
 
 uint8_t CanRegisters[128];
+void (*UpdateCanCallback)(CanHw_t*) = 0;
 void CANInitialize(CanHw_t* hw,SpiController_t* spi,SpiId_t msg8)
 {
 }
 void UpdateCAN(CanHw_t* hw)
 {
+	if (UpdateCanCallback)
+		UpdateCanCallback(hw);
+	UpdateCanCallback = 0;
 }
 
 void CANWriteRegister(CanHw_t* hw,uint8_t add, uint8_t data)
@@ -51,4 +55,13 @@ void CANReadRxStatusRegister(CanHw_t* hw, CanDelayedReturn_t* data)
 {
 	mock_c()->setPointerData("rx_reg",data);
 	data->isReady = 0;
+}
+
+void (*CANYieldFunction)(CanHw_t*) = 0;
+uint8_t CANReadRegisterBlocking(CanHw_t* hw, CanChipOffset_t offset)
+{
+	CanDelayedReturn_t reg;
+	CANYieldFunction(hw);
+	CANReadRegister(hw,offset,&reg);
+	return reg.data;
 }

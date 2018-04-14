@@ -7,6 +7,7 @@ extern "C"{
 #include <vector>
 
 extern uint8_t CanRegisters[128];
+extern void (*UpdateCanCallback)(CanHw_t*);
 TEST_GROUP(CAN)
 {
 	CanMaster_t master;
@@ -179,6 +180,23 @@ TEST(CAN, Idle)
 	{
 		UpdateLogicalCan(&can);
 	}
+}
+TEST(CAN, EnterCanMode)
+{
+	CanRegisters[0xe] = 0xf0;
+	CANYieldFunction = [](CanHw_t* hw)
+	{
+		static int x = 0;
+		switch(x)
+		{
+			case 3:
+				CanRegisters[0xe] = 0;
+				CANYieldFunction = 0;
+				break;
+		}
+		x++;
+	};
+	EnterCanMode(&can,CAN_NORMAL_MODE);
 }
 
 int main(int ac, char** av)

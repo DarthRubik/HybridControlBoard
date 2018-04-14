@@ -89,3 +89,13 @@ void UpdateLogicalCan(LogicalCan_t* can)
 		CANReadRxStatusRegister(can->host,&can->rxstatus);
 	}
 }
+void EnterCanMode(LogicalCan_t* can, CanMode_t mode)
+{
+	CANMutateRegisterBits(can->host,0xf,0x7<<5,mode<<5);
+	uint8_t data;
+	do
+	{
+		data = CANReadRegisterBlocking(can->host,0xe);
+	}
+	while ((data & (0x7<<5)) == (mode<<5));
+}

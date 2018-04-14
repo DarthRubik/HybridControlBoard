@@ -5,6 +5,14 @@
 typedef void (*CanLogicalCallBack)(void* custom,uint32_t* data,uint8_t length);
 CAN_RANGE_RETURN_MAKE(0x11,rx_reg_t);
 typedef uint8_t CanSubscriberSize_t;
+typedef enum 
+{
+	CAN_NORMAL_MODE = 0,
+	CAN_SLEEP_MODE = 1,
+	CAN_LOOP_BACK_MODE = 2,
+	CAN_LISTEN_ONLY_MODE = 3,
+	CAN_CONFIGURATION_MODE = 4,
+}CanMode_t;
 typedef struct
 {
 	CanHw_t* host;
@@ -37,6 +45,10 @@ void InitializeLogicalCan(LogicalCan_t* can,
 			CanSubscriberSize_t nsubs);
 void TransmitMessage(CanMaster_t* master,uint8_t* data,CanMessageLength_t length);
 void UpdateLogicalCan(LogicalCan_t* can);
+
+//The following methods are blocking and are only designed
+//to be called on startup
+void EnterCanMode(LogicalCan_t* can, CanMode_t mode); 
 
 
 #endif
